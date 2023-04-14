@@ -1,15 +1,17 @@
-import json
-
 import pydantic
 import requests
 
+import config
 from cvpartner.types.cv import CVResponse
 from cvpartner.types.user_list import UserListResponse
 
 
+base_url = f"https://{config.cvpartner_domain}/api"
+
+
 def search_users(cvpartner_api_key: str):
     headers = {"Authorization": f"Bearer {cvpartner_api_key}"}
-    url = "https://noaignite.cvpartner.com/api/v2/users/search"
+    url = f"{base_url}/v2/users/search"
     params: dict[str, int | bool | str] = {
         "from": 0,
         "size": 10,
@@ -32,7 +34,7 @@ def search_users(cvpartner_api_key: str):
 
 def find_user_id(email: str, cvpartner_api_key: str) -> tuple[str, str]:
     headers = {"Authorization": f"Bearer {cvpartner_api_key}"}
-    url = f"https://noaignite.cvpartner.com/api/v1/users/find?email={email}"
+    url = f"{base_url}/v1/users/find?email={email}"
     response = requests.get(url, headers=headers)
     try:
         user_data = response.json()
@@ -47,7 +49,7 @@ def find_user_id(email: str, cvpartner_api_key: str) -> tuple[str, str]:
 
 def query_cv(user_id: str, cv_id: str, cvpartner_api_key: str) -> CVResponse:
     headers = {"Authorization": f"Bearer {cvpartner_api_key}"}
-    url = f"https://noaignite.cvpartner.com/api/v3/cvs/{user_id}/{cv_id}"
+    url = f"{base_url}/v3/cvs/{user_id}/{cv_id}"
     response = requests.get(url, headers=headers)
     try:
         cv_data = response.json()
@@ -55,13 +57,10 @@ def query_cv(user_id: str, cv_id: str, cvpartner_api_key: str) -> CVResponse:
         print("Couldn't decode response from CVPartner:\n" + response.text)
         raise
 
-    with open("cv.json", "w") as f:
-        json.dump(cv_data, f, indent=4)
-
     try:
         cv = CVResponse(**cv_data)
     except pydantic.errors.JsonError as e:
-        print("Couldn't parse response from CVPartner:\n" + e.json())
+        print("Couldn't parse response from CVPartner:\n" + str(e))
         raise
 
     return cv

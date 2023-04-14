@@ -11,271 +11,163 @@ class TranslatedString(BaseModel):
     fi: Optional[str] = None
 
 
-class Blog(BaseModel):
+class CVField(BaseModel):
     field_id: str = Field(..., alias="_id")
-    created_at: Any
-    disabled: bool
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    owner_updated_at: Optional[str] = None
+    order: Optional[int] = None
+    recently_added: Optional[bool] = None
+    starred: Optional[bool] = None
+    starred_order: Optional[int] = None
+    version: Optional[int] = None
+    modifier_id: Optional[Any] = None
+    disabled: Optional[bool] = None
+
+
+class Blog(CVField):
     diverged_from_master: bool
     external_unique_id: Any
     long_description: TranslatedString
-    modifier_id: Any
     month: str
     name: TranslatedString
-    order: int
     origin_id: Any
-    owner_updated_at: Any
-    recently_added: bool
-    starred: bool
-    updated_at: Any
     url: Optional[str]
-    version: int
     year: str
 
 
-class Certification(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: str
-    disabled: bool
+class Certification(CVField):
     diverged_from_master: bool
     external_unique_id: Any
     long_description: TranslatedString
-    modifier_id: Any
     month: str
     month_expire: str
     name: TranslatedString
-    order: int
     organiser: TranslatedString
     origin_id: Any
-    owner_updated_at: Optional[str]
-    recently_added: bool
-    starred: bool
-    updated_at: str
-    version: int
     year: str
     year_expire: str
     attachments: List
 
 
-class Course(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: Optional[str] = None
-    disabled: bool
+class Course(CVField):
     diverged_from_master: bool
     external_unique_id: Any
     long_description: TranslatedString
-    modifier_id: Any
     month: Optional[str] = None
     name: TranslatedString
-    order: int
     origin_id: Any
-    owner_updated_at: Optional[str]
     program: TranslatedString
-    recently_added: bool
-    starred: bool
-    updated_at: str
-    version: int
     year: Optional[str] = None
     attachments: List
 
 
-class Role(BaseModel):
+class ProjectExperience(CVField):
     field_id: str = Field(..., alias="_id")
-
-
-class ProjectExperience(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    roles: List[Role]
+    roles: List[CVField]
     diverged_from_master: bool
 
 
-class CvRole(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: str
-    disabled: bool
+class CvRole(CVField):
     diverged_from_master: bool
-    modifier_id: Any
     name: TranslatedString
-    order: int
     origin_id: Any
-    owner_updated_at: Optional[str]
-    recently_added: bool
-    starred: bool
-    starred_order: Any
-    updated_at: str
-    version: Optional[int]
     years_of_experience: int
     years_of_experience_offset: int
     project_experiences: List[ProjectExperience]
 
 
-class Education(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: Any
+class Education(CVField):
     degree: TranslatedString
     description: TranslatedString
-    disabled: bool
     diverged_from_master: bool
     external_unique_id: Any
-    modifier_id: Any
     month_from: Optional[str] = None
     month_to: Optional[str] = None
-    order: int
     origin_id: Any
-    owner_updated_at: Any
-    recently_added: bool
     school: TranslatedString
-    starred: bool
-    updated_at: Optional[str] = None
-    version: int
     year_from: str
     year_to: str
     attachments: List
 
 
-class HonorsAward(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: Any
-    disabled: bool
+class HonorsAward(CVField):
     diverged_from_master: bool
     external_unique_id: Any
     for_work: TranslatedString
     issuer: TranslatedString
     long_description: TranslatedString
-    modifier_id: Any
     month: str
     name: TranslatedString
-    order: int
     origin_id: Any
-    owner_updated_at: str
-    recently_added: bool
-    starred: bool
-    updated_at: str
-    version: int
     year: str
 
 
-class KeyQualification(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: Any
-    disabled: bool
+class KeyQualification(CVField):
     diverged_from_master: bool
     external_unique_id: Any
     label: Dict[str, Any]
     long_description: TranslatedString
-    modifier_id: Any
-    order: int
     origin_id: Any
-    owner_updated_at: Any
-    recently_added: bool
-    starred: bool
     tag_line: Dict[str, Any]
-    updated_at: str
-    version: int
 
 
-class Language(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: Any
-    disabled: bool
+class Language(CVField):
     diverged_from_master: bool
     external_unique_id: Any
     level: TranslatedString
-    modifier_id: Any
     name: TranslatedString
-    order: int
     origin_id: Any
-    owner_updated_at: Any
-    recently_added: bool
-    starred: bool
-    updated_at: Optional[str]
-    version: int
 
 
-class Position(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: str
+class Position(CVField):
     description: TranslatedString
-    disabled: bool
     diverged_from_master: bool
     external_unique_id: Any
-    modifier_id: Any
     name: TranslatedString
-    order: int
     origin_id: Any
-    owner_updated_at: str
-    recently_added: bool
-    roles: list[Role] = []
-    starred: bool
-    updated_at: str
-    version: int
+    roles: list[CVField] = []
     year_from: str
     year_to: str
     years_of_experience: Optional[int] = None
 
 
-class Presentation(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: str
+class Presentation(CVField):
     description: TranslatedString
-    disabled: bool
     diverged_from_master: bool
     external_unique_id: Any
     long_description: TranslatedString
-    modifier_id: Any
     month: str
-    order: int
     origin_id: Any
-    owner_updated_at: Optional[str] = None
-    recently_added: bool
-    starred: bool
-    updated_at: str
-    version: int
     year: str
 
 
-class ProjectExperienceSkill(BaseModel):
-    field_id: str = Field(..., alias="_id")
+class ProjectExperienceSkill(CVField):
     base_duration_in_years: int
-    modifier_id: Any
     offset_duration_in_years: int
-    order: int
     proficiency: int
     tags: TranslatedString
     total_duration_in_years: int
-    version: int
 
 
-class Role1(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: Optional[str] = None
+class Role(CVField):
     cv_role_id: Optional[str] = None
-    disabled: bool
     diverged_from_master: bool
     long_description: TranslatedString
-    modifier_id: Any
     name: Optional[TranslatedString] = None
-    order: int
     origin_id: Any
-    recently_added: bool
-    starred: bool
-    summary: Dict[str, Any]
-    updated_at: Optional[str] = None
-    version: Optional[int] = None
+    summary: Dict[str, Any] = {}
 
 
-class ProjectExperience1(BaseModel):
-    field_id: str = Field(..., alias="_id")
+class ProjectExperienceExpanded(ProjectExperience):
     area_amt: Any
     area_unit: Any
-    created_at: Optional[str]
     customer: TranslatedString
     customer_anonymized: Dict[str, Any]
     customer_description: Dict[str, Any]
     customer_selected: str
     customer_value_proposition: Dict[str, Any]
     description: TranslatedString
-    disabled: bool
-    diverged_from_master: bool
     exclude_tags: Optional[List[Any]]
     expected_roll_off_date: Any
     extent_hours: Optional[str]
@@ -283,83 +175,52 @@ class ProjectExperience1(BaseModel):
     industry: TranslatedString
     location_country_code: Any
     long_description: TranslatedString
-    modifier_id: Any
     month_from: str
     month_to: str
-    order: int
     origin_id: Any
-    owner_updated_at: Optional[str]
     percent_allocated: Optional[str]
     project_experience_skills: List[ProjectExperienceSkill] = []
     project_extent_amt: Optional[str]
     project_extent_currency: Optional[str]
     project_extent_hours: Optional[str]
     project_type: TranslatedString
-    recently_added: bool
     related_work_experience_id: Any
-    roles: List[Role1]
-    starred: bool
+    roles: List[Role]
     total_extent_amt: Optional[str]
     total_extent_currency: Optional[str]
     total_extent_hours: Optional[str]
-    updated_at: str
-    version: int
     year_from: str
     year_to: str
     images: List
 
 
-class TechnologySkill(BaseModel):
-    field_id: str = Field(..., alias="_id")
+class TechnologySkill(CVField):
     base_duration_in_years: int
-    modifier_id: Any
     offset_duration_in_years: int
-    order: int
     proficiency: int
     tags: TranslatedString
     total_duration_in_years: int
-    version: Optional[int] = None
 
 
-class Technology(BaseModel):
-    field_id: str = Field(..., alias="_id")
+class Technology(CVField):
     category: TranslatedString
-    created_at: Optional[str]
-    disabled: bool
     diverged_from_master: bool
     exclude_tags: Optional[List[Any]]
     external_unique_id: Any
-    modifier_id: Any
-    order: Optional[int]
     origin_id: Any
-    owner_updated_at: Optional[str]
-    recently_added: bool
-    starred: bool
     technology_skills: List[TechnologySkill]
     uncategorized: bool
-    updated_at: str
-    version: int
 
 
-class WorkExperience(BaseModel):
-    field_id: str = Field(..., alias="_id")
-    created_at: Optional[str] = None
+class WorkExperience(CVField):
     description: TranslatedString
-    disabled: bool
     diverged_from_master: bool
     employer: TranslatedString
     external_unique_id: Any
     long_description: TranslatedString
-    modifier_id: Any
     month_from: str
     month_to: Optional[str] = None
-    order: int
     origin_id: Any
-    owner_updated_at: Optional[str]
-    recently_added: bool
-    starred: bool
-    updated_at: Optional[str] = None
-    version: int
     year_from: str
     year_to: Optional[str] = None
 
@@ -376,8 +237,7 @@ class Image(BaseModel):
     small_thumb: URL
 
 
-class CVResponse(BaseModel):
-    field_id: str = Field(..., alias="_id")
+class CVResponse(CVField):
     blogs: List[Blog] = []
     born_day: int
     born_month: int
@@ -385,7 +245,6 @@ class CVResponse(BaseModel):
     bruker_id: str
     certifications: List[Certification]
     courses: List[Course]
-    created_at: str
     custom_tag_ids: List
     cv_roles: List[CvRole]
     default: bool
@@ -398,24 +257,19 @@ class CVResponse(BaseModel):
     level: Any
     locked_at: Any
     locked_until: Any
-    modifier_id: Any
     name_multilang: Dict[str, Any]
     nationality: TranslatedString
     navn: str
-    order: Any
-    owner_updated_at: str
     owner_updated_at_significant: str
     place_of_residence: TranslatedString
     positions: List[Position] = []
     presentations: List[Presentation] = []
-    project_experiences: List[ProjectExperience1]
+    project_experiences: List[ProjectExperienceExpanded]
     technologies: List[Technology]
     telefon: str
     tilbud_id: Any
     title: TranslatedString
     twitter: Optional[str] = None
-    updated_at: str
-    version: int
     work_experiences: List[WorkExperience]
     name: str
     user_id: str

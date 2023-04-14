@@ -10,6 +10,6 @@ class Config(BaseSettings):
 
 
 env = Config()
+cvpartner_domain = "noaignite.cvpartner.com"
 
-
-__all__ = ["env"]
+__all__ = ["env", cvpartner_domain]

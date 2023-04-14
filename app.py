@@ -11,30 +11,43 @@ from profile.openai import call_openai, create_prompt
 from profile.prepare import prepare_profile
 
 
-@get("/generate-intro")
-def generate_intro(email: str, language: str) -> dict[str, str]:
+def generate_intro(email: str, language: str, return_at: str = None) -> dict[str, str]:
     # Step 1: Obtain API keys
     cvpartner_api_key = config.env.cvpartner_api_key
     openai_api_key = config.env.openai_api_key
 
     # Step 2: Find user_id
     user_id, cv_id = cvpartner_client.find_user_id(email, cvpartner_api_key)
+    if return_at == "user_id":
+        return {"user_id": user_id, "cv_id": cv_id}
 
     # Step 3: Make an API request to CVPartner
     cv = cvpartner_client.query_cv(user_id, cv_id, cvpartner_api_key)
+    if return_at == "cv":
+        return {"cv": cv.json(indent=4)}
 
     # Step 4: Extract relevant information
     profile = prepare_profile(cv, language)
+    if return_at == "profile":
+        return {"profile": profile}
 
     # Step 5: Use the OpenAI API to generate the intro text
     cv_prompt = create_prompt(cv.name, profile, language)
+    if return_at == "prompt":
+        return {"profile": profile, "prompt": cv_prompt}
+
     intro_text = call_openai(cv_prompt, openai_api_key)
 
     # Step 6: Return the generated text
     return {"profile": profile, "prompt": cv_prompt, "intro_text": intro_text}
 
 
-app = Litestar(route_handlers=[generate_intro])
+@get("/generate-intro")
+def generate_intro_handler(email: str, language: str) -> dict[str, str]:
+    return generate_intro(email, language)
+
+
+app = Litestar(route_handlers=[generate_intro_handler])
 
 
 if __name__ == "__main__":
@@ -45,11 +58,14 @@ if __name__ == "__main__":
 
     @click.command()
     @click.argument("email")
-    def fetch(email: str):
-        cvpartner_api_key = config.env.cvpartner_api_key
-        user_id, cv_id = cvpartner_client.find_user_id(email, cvpartner_api_key)
-        cv = cvpartner_client.query_cv(user_id, cv_id, cvpartner_api_key)
-        print(json.dumps(cv.dict(), indent=4))
+    @click.option("--language", default="no")
+    @click.option(
+        "--return-at",
+        type=click.Choice(["intro_text", "user_id", "cv", "profile", "prompt"]),
+        default="intro_text",
+    )
+    def run(email: str, language: str, return_at: str):
+        print(generate_intro(email, language, return_at=return_at)[return_at])
 
     @click.command()
     def list_users():
@@ -57,30 +73,11 @@ if __name__ == "__main__":
         user_data = cvpartner_client.search_users(cvpartner_api_key)
         print(json.dumps(user_data, indent=4))
 
-    @click.command()
-    @click.argument("email")
-    def prompt(email: str):
-        language = "no"
-        cvpartner_api_key = config.env.cvpartner_api_key
-
-        # Step 2: Find user_id
-        user_id, cv_id = cvpartner_client.find_user_id(email, cvpartner_api_key)
-
-        # Step 3: Make an API request to CVPartner
-        cv = cvpartner_client.query_cv(user_id, cv_id, cvpartner_api_key)
-
-        # Step 4: Extract relevant information
-        profile = prepare_profile(cv, language)
-
-        # Step 5: Use the OpenAI API to generate the intro text
-        print(create_prompt(cv.name, profile, language))
-
     @click.group()
     def group():
         pass
 
-    group.add_command(fetch)
     group.add_command(list_users)
-    group.add_command(prompt)
+    group.add_command(run)
     group.add_command(server)
     group()
