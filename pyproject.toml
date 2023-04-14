@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "cvpartner-intro-writer"
+version = "0.1.0"
+description = ""
+authors = ["Robert Kolner <robert.kolner@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.28.2"
+openai = "^0.27.2"
+python-dotenv = "^1.0.0"
+pydantic = "^1.10.7"
+python-dateutil = "^2.8.2"
+litestar = {extras = ["cli"], version = "^2.0.0a4"}
+uvicorn = "^0.21.1"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+click = "^8.1.3"
+
+[tool.ruff]
+line-length = 120
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
