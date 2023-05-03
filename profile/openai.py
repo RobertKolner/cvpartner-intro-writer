@@ -1,30 +1,30 @@
-from textwrap import dedent
+import re
 
 import openai
 
 
 def create_prompt(name: str, profile: str, language: str) -> str:
     prompts = {
-        "int": dedent(
+        "int": re.sub(
+            r"\s+",
+            " ",
             f"""This is a profile for a consultant named {name}. I want you to generate
                 a good intro text for this profile. The profile is in English, so
-                please write the intro text in English. The profile is as follows:
-
-                {profile}"""
+                please write the intro text in English. The profile is as follows:""",
         ),
-        "no": dedent(
+        "no": re.sub(
+            r"\s+",
+            " ",
             f"""Dette er en profil for en konsulent som heter {name}. Jeg vil at du
                 skal generere en profesjonell og god introtekst for denne profilen. Den
                 skal fremheve kvalitetene til personen og gjøre det lettere å selge de
                 inn til en kunde. Legg vekt på teknologier konsulenten behersker.
                 Profilen er på norsk, så vennligst skriv introteksten på norsk.
-                Profilen er som følger:
-
-                {profile}"""
+                Profilen er som følger:""",
         ),
     }
 
-    return prompts[language]
+    return f"{prompts[language]}\n\n{profile}"
 
 
 def call_openai(prompt: str, openai_api_key: str) -> str:

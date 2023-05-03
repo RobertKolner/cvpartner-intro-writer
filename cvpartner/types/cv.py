@@ -208,7 +208,7 @@ class Technology(CVField):
     exclude_tags: Optional[List[Any]]
     external_unique_id: Any
     origin_id: Any
-    technology_skills: List[TechnologySkill]
+    technology_skills: List[TechnologySkill] = []
     uncategorized: bool
 
 
