@@ -9,7 +9,7 @@ from cvpartner.types.user_list import UserListResponse
 base_url = f"https://{config.cvpartner_domain}/api"
 
 
-def search_users(cvpartner_api_key: str):
+def search_users(cvpartner_api_key: str) -> UserListResponse:
     headers = {"Authorization": f"Bearer {cvpartner_api_key}"}
     url = f"{base_url}/v2/users/search"
     params: dict[str, int | bool | str] = {

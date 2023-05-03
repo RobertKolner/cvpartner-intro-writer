@@ -56,15 +56,15 @@ OPENAI_API_KEY=your_openai_api_key
 
 Fetch user CV data by email:
 
-```poetry run fetch user@example.com```
+```poetry run python3 -m app -- run --return-at=cv user@example.com```
 
 List all users:
 
-```poetry run list_users```
+```poetry run python3 -m app -- list-users```
 
 Generate an intro prompt for a user by email:
 
-```poetry run prompt user@example.com```
+```poetry run python3 -m app -- run --return-at=prompt user@example.com```
 
 ### API Endpoint
 

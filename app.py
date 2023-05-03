@@ -71,7 +71,7 @@ if __name__ == "__main__":
     def list_users():
         cvpartner_api_key = config.env.cvpartner_api_key
         user_data = cvpartner_client.search_users(cvpartner_api_key)
-        print(json.dumps(user_data, indent=4))
+        print(json.dumps(user_data.json(), indent=4))
 
     @click.group()
     def group():
